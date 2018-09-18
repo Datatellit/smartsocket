@@ -3,6 +3,9 @@
 #include "MyMessage.h"
 #include "xliNodeConfig.h"
 
+#define DEVICE_SW_OFF 0
+#define DEVICE_SW_ON  1
+
 uint8_t bMsgReady = 0;
 bool bDelaySend = FALSE;
 
@@ -135,6 +138,22 @@ uint8_t ParseProtocol(){
           gConfig.subID = subid;
         }
         break;
+      case NCF_DEV_SET_SENSOR:
+        uint8_t onoff = rcvMsg.payload.data[0];
+        if(onoff == DEVICE_SW_ON)
+        {
+           bAdjusting = TRUE;
+        }
+        else if(onoff == DEVICE_SW_OFF)
+        {
+          gConfig.coefficient = (rcvMsg.payload.data[2]<<8 | rcvMsg.payload.data[3]);
+          gConfig.constant = (rcvMsg.payload.data[5]<<8 | rcvMsg.payload.data[6]);
+          if(rcvMsg.payload.data[4] == 0)
+          {
+            gConfig.constant = gConfig.constant*(-1);
+          }     
+          bAdjusting = FALSE;
+        }
       }
       gIsConfigChanged = TRUE;
       Msg_NodeConfigAck(_sender, _sensor);
@@ -246,7 +265,7 @@ void Msg_RequestNodeID() {
 
 // Prepare device presentation message
 void Msg_Presentation() {
-  build(NODEID_GATEWAY, S_LIGHT, C_PRESENTATION, gConfig.type, 1, 0);
+  build(NODEID_GATEWAY, S_POWER, C_PRESENTATION, gConfig.type, 1, 0);
   moSetPayloadType(P_ULONG32);
   moSetLength(UNIQUE_ID_LEN);
   memcpy(sndMsg.payload.data, _uniqueID, UNIQUE_ID_LEN);
@@ -292,14 +311,30 @@ void Msg_TotalEQReport(uint16_t index,uint16_t current)
 }
 
 // current change message
-void Msg_CurrentChange(uint16_t current) {
+void Msg_CurrentChange(uint16_t current,bool isOriginal) {
+  build(NODEID_GATEWAY, gConfig.subID, C_REQ, V_CURRENT, 0, 1);
+  moSetPayloadType(P_BYTE);
+  uint8_t len = 2;
+  sndMsg.payload.data[0] = current % 256;
+  sndMsg.payload.data[1] = current / 256;
+  if(isOriginal)
+  {
+    sndMsg.payload.data[2] = 1;
+    len++;
+  } 
+  moSetLength(len);
+  bMsgReady = 1;
+}
+
+/*// sensor data message
+void Msg_SensorData(uint16_t sensor) {
   build(NODEID_GATEWAY, gConfig.subID, C_REQ, V_CURRENT, 0, 1);
   moSetPayloadType(P_UINT16);
   moSetLength(2);
-  sndMsg.payload.data[0] = current % 256;
-  sndMsg.payload.data[1] = current / 256;
+  sndMsg.payload.data[0] = sensor % 256;
+  sndMsg.payload.data[1] = sensor / 256;
   bMsgReady = 1;
-}
+}*/
 
 //----------------------------------------------
 // RF Scanner Messages

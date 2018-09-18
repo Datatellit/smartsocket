@@ -1,5 +1,6 @@
 #include "I_collect.h"
 #include "delay.h"
+#include "_global.h"
 
 #define CURRENT_WIN         60
 #define COLLECT_INTERVAL    5000   // 5000*200us = 1000ms
@@ -42,18 +43,13 @@ void init_ADC()
         memset(curr_mvData, 0x00, sizeof(uint16_t) * CURRENT_WIN);
 }
 
-//the turn ratio of Sensor is 1:2000£¬sampling resistor R=10£¬Vref = 1.65V
-//Vin=1.65-I/2000*20*10
-//AD_value=Vin/3.3*1024=(1.65-I/2000*20*10)/3.3*1024=AD_Vref-I*31
-//Imax=(AD_Vref-AD_value_min)/31;
-//Iefc=Imax*0.707
-//Iefc=(AD_Vref-AD_value_min)*0.707/31*100=(AD_Vref-AD_value_min)*2.28;Magnified 100 times
 uint16_t CalcEffectiveValue()
 {	 
      uint16_t EffectiveValue = 0;
      if(ADC_IMAX > ADC_IMIN)
      {
-        EffectiveValue = ((ADC_IMAX-ADC_IMIN)*21-11)/10;
+        EffectiveValue = (ADC_IMAX-ADC_IMIN);
+        //EffectiveValue = EffectiveValue*74/50;
      }
      else
      {
@@ -95,19 +91,9 @@ void read_ADC_value()
                 if(m_collectTick >= COLLECT_INTERVAL)
                 { // almost 1s
                   m_collectTick = 0;
-                  uint16_t current = CalcEffectiveValue();
-                  //if(curr_mvPtr == 0)
-                  //{
-                  //  curr_sum = 0;
-                  //}                  
+                  uint16_t current = CalcEffectiveValue();                 
                   curr_mvData[curr_mvPtr] = current;
                   curr_mvPtr = (curr_mvPtr+1)%CURRENT_WIN;
-                  //curr_sum += current;
-                  //if(curr_mvPtr == CURRENT_WIN-1)
-                  //{
-                  //  eqIndex = (eqIndex+1)%1000;
-                  //  last_curr_sum = curr_sum;
-                  //}
                 }
 		index=0;
 	}
@@ -115,7 +101,27 @@ void read_ADC_value()
 	ADC1_StartConversion();
 }
 
+uint16_t CalCurrent(uint16_t adValue)
+{
+  int32_t ka = (int32_t)adValue*gConfig.coefficient;
+  uint32_t value = ka+gConfig.constant;
+  return value/1000;
+  //return adValue*74/50;
+}
+
 uint16_t GetCurrent()
+{
+  if(curr_mvPtr == 0)
+  {
+    return CalCurrent(curr_mvData[CURRENT_WIN-1]);
+  }
+  else
+  {
+    return CalCurrent(curr_mvData[curr_mvPtr-1]);
+  }
+}
+
+uint16_t GetSensorData()
 {
   if(curr_mvPtr == 0)
   {
@@ -135,7 +141,7 @@ uint16_t GetMinuteEQ()
   {
     last_curr_sum+=curr_mvData[i];
   }
-  return last_curr_sum/CURRENT_WIN*220/60;
+  return (CalCurrent(last_curr_sum/CURRENT_WIN))*220/60;
 }
 
 /**

@@ -155,6 +155,9 @@
       <file>
         <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\wwdg.h</name>
       </file>
+      <file>
+        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\xliNodeConfig.h</name>
+      </file>
     </group>
     <group>
       <name>inc</name>
@@ -175,9 +178,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\Project\inc\timer_3.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\Project\inc\xliNodeConfig.h</name>
       </file>
     </group>
     <group>

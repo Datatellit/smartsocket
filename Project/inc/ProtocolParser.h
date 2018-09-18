@@ -19,7 +19,7 @@ void Msg_EQReport(uint16_t eq,uint16_t index,uint16_t current);
 void Msg_TotalEQReport(uint16_t index,uint16_t current);
 
 // current change message
-void Msg_CurrentChange(uint16_t current);
+void Msg_CurrentChange(uint16_t current,bool isOriginal);
 
 
 #endif /* __PROTOCOL_PARSER_H */

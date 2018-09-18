@@ -1,6 +1,6 @@
 #include <stm8s.h>
 #include "timer_3.h"
-#include "publicDefine.h"
+#include "stdio.h"
 
 uint8_t TIM3_Timer500ms = 4;
 

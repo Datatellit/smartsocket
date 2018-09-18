@@ -11,6 +11,8 @@ void read_ADC_value();
 uint16_t CalcEffectiveValue();
 
 uint16_t GetCurrent();
+uint16_t GetSensorData();
+uint16_t CalCurrent(uint16_t adValue);
 
 uint16_t GetMinuteEQ();
 

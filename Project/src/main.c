@@ -97,6 +97,10 @@ uint16_t m_EQCalTick = 0;
 uint16_t lastAccEQIndex = 0;
 uint16_t eqIndex = 0;
 
+// sensor data interval
+uint16_t m_SensorDataTick = 0;
+bool bAdjusting = FALSE;
+
 void tmrCalPower();
 
 uint8_t *Read_UniqueID(uint8_t *UniqueID, uint16_t Length)  
@@ -396,16 +400,16 @@ void GotPresented() {
   gConfig.swTimes = 0;
   gIsStatusChanged = TRUE;
 }
-
+uint16_t test = 0;
 int main( void ) {
   //After reset, the device restarts by default with the HSI clock divided by 8.
   //CLK_DeInit();
   /* High speed internal clock prescaler: 1 */
   CLK_SYSCLKConfig(CLK_PRESCALER_HSIDIV1);  // now: HSI=16M prescale = 1; sysclk = 16M
 
-  // Load config from Flash
   FLASH_DeInit();
   Read_UniqueID(_uniqueID, UNIQUE_ID_LEN);
+  // Load config from Flash
   LoadConfig();
   if(((gConfig.totalEQ >> 8)^0xFFFFFF) == 0)
   {
@@ -458,35 +462,47 @@ int main( void ) {
       
       // Feed the Watchdog
       feed_wwdg();
-      
-      // report eq
-      if(m_EQCollectTick >= EQ_REPORT_INTERVAL)
+
+      if(bAdjusting)
       {
-         m_EQCollectTick = 0;
-         Msg_TotalEQReport(eqIndex,GetCurrent());
+        if(m_SensorDataTick >= CURRENT_SND_INTERVAL)
+        {
+          m_SensorDataTick = 0;
+          Msg_CurrentChange(GetSensorData(),1);
+          SendMyMessage();   
+        }
       }
-      SendMyMessage();
-      // report current 
-      if(m_ICollectTick >= CURRENT_SND_INTERVAL)
+      else
       {
-         uint16_t current = GetCurrent();
-         uint16_t threshold = 0;
-         if(current >= pre_current) 
-         {
-           threshold = current - pre_current;
-         }
-         else 
-         {
-           threshold = pre_current - current;
-         }
-         if(threshold >= CURRENT_CHANGE_THRESHOLD || m_ICollectTick>=CURRENT_SND_MAX_INTERVAL)
-         {
-           m_ICollectTick = 0;
-           pre_current = current;
-           Msg_CurrentChange(current);
-         }
+        // report eq
+        if(m_EQCollectTick >= EQ_REPORT_INTERVAL)
+        {
+           m_EQCollectTick = 0;
+           Msg_TotalEQReport(eqIndex,GetCurrent());
+        }
+        SendMyMessage();
+        // report current 
+        if(m_ICollectTick >= CURRENT_SND_INTERVAL)
+        {
+           uint16_t current = GetCurrent();
+           uint16_t threshold = 0;
+           if(current >= pre_current) 
+           {
+             threshold = current - pre_current;
+           }
+           else 
+           {
+             threshold = pre_current - current;
+           }
+           if(threshold >= CURRENT_CHANGE_THRESHOLD || m_ICollectTick>=CURRENT_SND_MAX_INTERVAL)
+           {
+             m_ICollectTick = 0;
+             pre_current = current;
+             Msg_CurrentChange(current,0);
+           }
+        }
+        SendMyMessage();        
       }
-      SendMyMessage();
       
       ResetRFModule();
 
@@ -502,6 +518,7 @@ int main( void ) {
 void tmrProcess() {
    m_ICollectTick++;
    m_EQCollectTick++; 
+   m_SensorDataTick++;
   // Save config into backup area
    SaveBackupConfig();
 }
