@@ -96,6 +96,8 @@ uint16_t m_EQCollectTick = 0;
 uint16_t m_EQCalTick = 0;
 uint16_t lastAccEQIndex = 0;
 uint16_t eqIndex = 0;
+#define SAVESTATUS_INTERVAL  10 // 10min
+uint16_t save_tick = 0;
 
 // sensor data interval
 uint16_t m_SensorDataTick = 0;
@@ -263,6 +265,8 @@ void LoadConfig()
         gConfig.rfChannel = RF24_CHANNEL;
         gConfig.rfPowerLevel = RF24_PA_MAX;
         gConfig.rfDataRate = RF24_250KBPS;
+        gConfig.coefficient = ADJUST_K;
+        gConfig.constant = ADJUST_B;
     }
     gIsConfigChanged = TRUE;
     SaveConfig();
@@ -400,8 +404,8 @@ void GotPresented() {
   gConfig.swTimes = 0;
   gIsStatusChanged = TRUE;
 }
-uint16_t test = 0;
 int main( void ) {
+  static uint8_t bRestart = 1;
   //After reset, the device restarts by default with the HSI clock divided by 8.
   //CLK_DeInit();
   /* High speed internal clock prescaler: 1 */
@@ -454,8 +458,13 @@ int main( void ) {
     UpdateNodeAddress(NODEID_GATEWAY);
     
     // Send Presentation Message
-    Msg_Presentation();
+    if( bRestart == 1 )
+    {
+      Msg_Presentation();
+      bRestart = 0;
+    } 
     SendMyMessage();
+    RF24L01_set_mode_RX();
     mStatus = SYS_RUNNING;
 
     while (mStatus == SYS_RUNNING) {
@@ -503,9 +512,10 @@ int main( void ) {
         }
         SendMyMessage();        
       }
-      
+      ////////////rfscanner process///////////////////////////////
+      ProcessOutputCfgMsg(); 
+      ////////////rfscanner process/////////////////////////////// 
       ResetRFModule();
-
       SaveConfig();
       
       // ToDo: Check heartbeats
@@ -529,10 +539,15 @@ void tmrCalPower() {
    if(m_EQCalTick >= 120)
    {//1min interval
      m_EQCalTick = 0;
+     save_tick++;
      eqIndex = (eqIndex+1)%10000;
      uint16_t eqeverymin = GetMinuteEQ();
      gConfig.totalEQ += eqeverymin;
-     gIsStatusChanged = TRUE;
+     if(save_tick >= SAVESTATUS_INTERVAL)
+     {
+       gIsStatusChanged = TRUE;
+       save_tick = 0;
+     } 
    }
 }
 

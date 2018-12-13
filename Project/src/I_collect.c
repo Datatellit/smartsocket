@@ -25,7 +25,7 @@ void adjustVref()
 
 void Timer1_init()
 {
-	TIM1_TimeBaseInit(15,TIM1_COUNTERMODE_UP,200,0);//200us
+	TIM1_TimeBaseInit(15,TIM1_COUNTERMODE_UP,200,0);//200us(16/(15+1)*200)
 	TIM1_ARRPreloadConfig(ENABLE);
 	TIM1_ITConfig(TIM1_IT_UPDATE , ENABLE);
 	TIM1_Cmd(ENABLE);
@@ -61,7 +61,6 @@ uint16_t CalcEffectiveValue()
 void read_ADC_value()
 {
 	static unsigned char index=0;
-        static uint32_t curr_sum = 0;
 	// Wait convert finished
 	while(ADC1_GetFlagStatus(ADC1_FLAG_EOC) == RESET);
 	// Get value
@@ -141,7 +140,8 @@ uint16_t GetMinuteEQ()
   {
     last_curr_sum+=curr_mvData[i];
   }
-  return (CalCurrent(last_curr_sum/CURRENT_WIN))*220/60;
+  uint32_t meanCurr = CalCurrent(last_curr_sum/CURRENT_WIN);
+  return meanCurr*220/60;
 }
 
 /**

@@ -3,6 +3,9 @@
 
 #include "publicDefine.h"
 
+#define ADJUST_K   1594
+#define ADJUST_B   -46
+
 // Keep alive message interval, around 6 seconds
 #define RTE_TM_KEEP_ALIVE               500    // about 5s (500 * 10ms)
 #define MAX_RF_FAILED_TIME              10      // Reset RF module when reach max failed times of sending

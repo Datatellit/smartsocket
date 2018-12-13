@@ -129,13 +129,38 @@ uint8_t ParseProtocol(){
         if(_lenPayl >= 2) 
         {
           uint8_t rfchannel = rcvMsg.payload.data[1];
-          gConfig.rfChannel = rfchannel;
-          gResetRF = TRUE;
+          if(rfchannel != 0)
+          {
+            gConfig.rfChannel = rfchannel;
+            gResetRF = TRUE;
+          }
         }
         if(_lenPayl >= 3)
         {
           uint8_t subid = rcvMsg.payload.data[2];
           gConfig.subID = subid;
+        }
+        if(_lenPayl >= 4)
+        {
+          uint8_t netlen = _lenPayl - 3;
+          uint8_t bnetvalid = 0;
+          for(uint8_t i = 0;i<netlen;i++)
+          {
+            if(rcvMsg.payload.data[3+i] != 0) 
+            {
+              bnetvalid = 1;
+              break;
+            }
+          }
+          if(bnetvalid)
+          {
+            memset(gConfig.NetworkID,0x00,sizeof(gConfig.NetworkID));
+            for(uint8_t j = 0;j<netlen;j++)
+            {
+              gConfig.NetworkID[4-j] = rcvMsg.payload.data[3+j];
+            }
+            gResetRF = TRUE;
+          }
         }
         break;
       case NCF_DEV_SET_SENSOR:
