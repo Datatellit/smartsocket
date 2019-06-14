@@ -107,56 +107,68 @@
     <name>User</name>
     <group>
       <name>common</name>
+      <group>
+        <name>ComBusiness</name>
+        <file>
+          <name>$PROJ_DIR$\..\xlightCommon\xlightdefine\Business\ProtocolBus.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\xlightCommon\xlightdefine\Business\ProtocolBus.h</name>
+        </file>
+      </group>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\debugDefine.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\xlightdefine\debugDefine.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\delay.c</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\delay.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\delay.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\delay.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\FlashDataStorage.c</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\FlashDataStorage.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\FlashDataStorage.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\FlashDataStorage.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\MyMessage.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\xlightdefine\MyMessage.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\publicDefine.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\xlightdefine\publicDefine.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\rf24l01.c</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\rf24l01.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\rf24l01.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\rf24l01.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\stm8s_conf.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\stm8s_conf.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\timer_4.c</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\stm8s_it.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\timer_4.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\timer_4.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\Uart2Dev.c</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\timer_4.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\Uart2Dev.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\Uart2Dev.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\wwdg.c</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\Uart2Dev.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\wwdg.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\wwdg.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\xlightCommon-stm8s\Xlight_lib\xliNodeConfig.h</name>
+        <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\wwdg.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\xlightCommon\xlightdefine\xliNodeConfig.h</name>
       </file>
     </group>
     <group>
@@ -169,9 +181,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\Project\inc\ProtocolParser.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\Project\inc\stm8s_conf.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\Project\inc\stm8s_it.h</name>
@@ -195,6 +204,9 @@
         <name>$PROJ_DIR$\Project\src\timer_3.c</name>
       </file>
     </group>
+    <file>
+      <name>$PROJ_DIR$\..\xlightCommon\stm8s\Xlight-stm8s\stm8sheader.h</name>
+    </file>
   </group>
 </project>
 

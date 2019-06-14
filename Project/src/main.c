@@ -65,8 +65,6 @@ void testio()
   #define     UNIQUE_ID_ADDRESS         (0x4865)
 #endif
 
-const UC RF24_BASE_RADIO_ID[ADDRESS_WIDTH] = {0x00,0x54,0x49,0x54,0x44};
-
 // Public variables
 Config_t gConfig;
 MyMessage_t sndMsg, rcvMsg;
@@ -202,7 +200,7 @@ void SaveStatusData()
 void SaveConfig()
 {
   if( gIsConfigChanged ) {
-    gNeedSaveBackup = TRUE;
+    gIsStatusChanged = TRUE;
     // Overwrite entire config FLASH 
     uint8_t Attmpts = 0;
     while(++Attmpts <= 3) {

@@ -2,6 +2,7 @@
 #define __GLOBAL_H
 
 #include "publicDefine.h"
+#include "stm8sheader.h"
 
 #define ADJUST_K   1594
 #define ADJUST_B   -46
