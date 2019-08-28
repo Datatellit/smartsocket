@@ -4,6 +4,7 @@
 #include "_global.h"
 #include "ProtocolBus.h"
 
+extern uint8_t runLEDTick;
 uint8_t ParseProtocol();
 void build(uint8_t _destination, uint8_t _sensor, uint8_t _command, uint8_t _type, bool _enableAck, bool _isAck);
 

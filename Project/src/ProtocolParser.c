@@ -9,6 +9,7 @@
 
 uint16_t delaySendTick = 0;
 bool bDelaySend = FALSE;
+uint8_t runLEDTick = 0;
 
 uint8_t ParseProtocol(){
   if( rcvMsg.header.destination != gConfig.nodeID && rcvMsg.header.destination != BROADCAST_ADDRESS ) return 0;
@@ -25,10 +26,40 @@ uint8_t ParseProtocol(){
   bool _isAck = (bool)miGetAck();
   
   bDelaySend = FALSE;
-  switch( _cmd ) {  
+  switch( _cmd ) {
+  case C_INTERNAL:
+    if( _type == I_CONFIG ) {
+      // Node Config
+      switch( _sensor ) {
+        case NCF_DEV_SET_SENSOR:
+        {
+            uint8_t onoff = rcvMsg.payload.data[0];
+            if(onoff == DEVICE_SW_ON)
+            {
+               bAdjusting = TRUE;
+            }
+            else if(onoff == DEVICE_SW_OFF)
+            {
+              gConfig.coefficient = (rcvMsg.payload.data[2]<<8 | rcvMsg.payload.data[3]);
+              gConfig.constant = (rcvMsg.payload.data[5]<<8 | rcvMsg.payload.data[6]);
+              if(rcvMsg.payload.data[4] == 0)
+              {
+                gConfig.constant = gConfig.constant*(-1);
+              }     
+              bAdjusting = FALSE;
+            }
+        }
+        break; 
+      }
+    }
+    break;
   case C_REQ:
     if(IS_MINE_SUBID(_sensor))
     {
+      if( _type == V_STATUS ) {
+        GPIO_WriteLow(GPIOE , GPIO_PIN_5);
+        runLEDTick = 200;
+      }
       if(_isAck)
       {
         if( _type == V_KWH )

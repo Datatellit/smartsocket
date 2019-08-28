@@ -434,6 +434,7 @@ int main( void ) {
   TIM3_500ms_handler = tmrCalPower;
   Time3_Init();
   //TIM2_Init();
+  GPIO_Init(GPIOE , GPIO_PIN_5 , GPIO_MODE_OUT_PP_LOW_SLOW);
 #ifdef TEST
    testio();
 #endif
@@ -529,6 +530,14 @@ void tmrProcess() {
    m_SensorDataTick++;
   // Save config into backup area
    SaveBackupConfig();
+   if(runLEDTick >0)
+   {
+     runLEDTick--;
+     if(runLEDTick == 0)
+     {
+       GPIO_WriteHigh(GPIOE , GPIO_PIN_5);
+     }
+   }
 }
 
 void tmrCalPower() {
