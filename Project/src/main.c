@@ -434,7 +434,7 @@ int main( void ) {
   TIM3_500ms_handler = tmrCalPower;
   Time3_Init();
   //TIM2_Init();
-  GPIO_Init(GPIOE , GPIO_PIN_5 , GPIO_MODE_OUT_PP_LOW_SLOW);
+  GPIO_Init(GPIOE , GPIO_PIN_5 , GPIO_MODE_OUT_PP_HIGH_SLOW);
 #ifdef TEST
    testio();
 #endif

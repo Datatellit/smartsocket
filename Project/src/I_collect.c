@@ -2,9 +2,9 @@
 #include "delay.h"
 #include "_global.h"
 
-#define CURRENT_WIN         60
+#define CURRENT_WIN         60      // 1min(put a data every 1s)
 #define COLLECT_INTERVAL    5000   // 5000*200us = 1000ms
-#define COLLECT_SAMPLE_NUM  100
+#define COLLECT_SAMPLE_NUM  100    // 200us*100sample
 
 uint16_t ADC_IMIN = 0;
 uint16_t ADC_IMAX = 0;

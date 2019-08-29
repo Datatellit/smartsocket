@@ -40,13 +40,16 @@ uint8_t ParseProtocol(){
             }
             else if(onoff == DEVICE_SW_OFF)
             {
-              gConfig.coefficient = (rcvMsg.payload.data[2]<<8 | rcvMsg.payload.data[3]);
-              gConfig.constant = (rcvMsg.payload.data[5]<<8 | rcvMsg.payload.data[6]);
-              if(rcvMsg.payload.data[4] == 0)
-              {
-                gConfig.constant = gConfig.constant*(-1);
-              }     
-              bAdjusting = FALSE;
+              if(_lenPayl >= 7)
+              {                     
+                gConfig.coefficient = (rcvMsg.payload.data[2]<<8 | rcvMsg.payload.data[3]);
+                gConfig.constant = (rcvMsg.payload.data[5]<<8 | rcvMsg.payload.data[6]);
+                if(rcvMsg.payload.data[4] == 0)
+                {
+                  gConfig.constant = gConfig.constant*(-1);
+                }     
+                bAdjusting = FALSE;
+              }
             }
         }
         break; 
