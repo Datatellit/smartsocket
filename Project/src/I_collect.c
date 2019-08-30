@@ -46,7 +46,8 @@ void init_ADC()
 uint16_t CalcEffectiveValue()
 {	 
      uint16_t EffectiveValue = 0;
-     if(ADC_IMAX > ADC_IMIN)
+     EffectiveValue = ADC_IMAX;
+     /*if(ADC_IMAX > ADC_IMIN)
      {
         EffectiveValue = (ADC_IMAX-ADC_IMIN);
         //EffectiveValue = EffectiveValue*74/50;
@@ -54,7 +55,7 @@ uint16_t CalcEffectiveValue()
      else
      {
         EffectiveValue = 0;
-     }
+     }*/
      return EffectiveValue;
 }
 

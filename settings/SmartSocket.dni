@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-1883540715
+Checksum=-220993929
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -28,7 +28,7 @@ Bp2=_ "STD_CODE" "{$PROJ_DIR$\..\xlightCommon\xlightdefine\Business\ProtocolBus.
 Bp3=_ "STD_CODE" "{$PROJ_DIR$\Project\src\main.c}.466.5" 1 0 0 0 "" 0 ""
 Bp4=_ "STD_CODE" "{$PROJ_DIR$\..\xlightCommon\xlightdefine\Business\ProtocolBus.c}.103.11" 0 0 0 0 "" 0 ""
 Bp5=_ "STD_CODE" "{$PROJ_DIR$\..\xlightCommon\xlightdefine\Business\ProtocolBus.c}.103.11" 0 0 0 0 "" 0 ""
-Bp6=_ "STD_CODE" "{$PROJ_DIR$\Project\src\ProtocolParser.c}.144.3" 1 0 0 0 "" 0 ""
+Bp6=_ "STD_CODE" "{$PROJ_DIR$\Project\src\I_collect.c}.108.3" 1 0 0 0 "" 0 ""
 Count=7
 [Log file]
 LoggingEnabled=_ 0

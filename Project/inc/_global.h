@@ -4,8 +4,8 @@
 #include "publicDefine.h"
 #include "stm8sheader.h"
 
-#define ADJUST_K   1594
-#define ADJUST_B   -46
+#define ADJUST_K   5656
+#define ADJUST_B   0
 
 // Keep alive message interval, around 6 seconds
 #define RTE_TM_KEEP_ALIVE               500    // about 5s (500 * 10ms)

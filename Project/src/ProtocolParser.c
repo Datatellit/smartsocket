@@ -48,8 +48,8 @@ uint8_t ParseProtocol(){
                 {
                   gConfig.constant = gConfig.constant*(-1);
                 }     
-                bAdjusting = FALSE;
               }
+              bAdjusting = FALSE;
             }
         }
         break; 
